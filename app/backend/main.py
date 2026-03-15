@@ -265,6 +265,32 @@ async def websocket_endpoint(websocket: WebSocket):
         await websocket.send_text(json.dumps({"type": "error", "message": str(e)}))
 
 
+async def handle_interruption(websocket: WebSocket, audio_input_queue):
+    """Handle AI interruption request from user"""
+    try:
+        # Clear any pending audio data in queue
+        while not audio_input_queue.empty():
+            try:
+                audio_input_queue.get_nowait()
+            except:
+                break
+
+        # Send confirmation to frontend that interruption was processed
+        await websocket.send_text(
+            json.dumps(
+                {
+                    "type": "interruption_processed",
+                    "message": "AI response interrupted, ready for new input",
+                }
+            )
+        )
+
+        logger.info("🔴 AI interruption processed - queues cleared")
+
+    except Exception as e:
+        logger.error(f"Error handling interruption: {e}")
+
+
 async def handle_frontend_messages(
     websocket: WebSocket, audio_input_queue, video_input_queue, text_input_queue
 ):
@@ -296,6 +322,17 @@ async def handle_frontend_messages(
             elif message.get("type") == "stop_recording":
                 logger.info("Recording stopped")
                 conv_tracker.log_user_end()
+
+            elif message.get("type") == "interrupt_ai":
+                logger.info("🔴 AI interruption requested by user")
+                # Handle interruption - stop current response and clear queues
+                await handle_interruption(websocket, audio_input_queue)
+
+            elif message.get("type") == "end_of_speech":
+                logger.info("🗣️ End of speech signal received - user finished speaking")
+                # In real-time architecture, this signals the AI can now respond
+                # The audio chunks have already been sent to Gemini Live API
+                # This is just a notification that user input is complete
 
     except WebSocketDisconnect:
         logger.info("Frontend disconnected in handler")
