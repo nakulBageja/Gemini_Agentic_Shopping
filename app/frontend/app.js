@@ -35,6 +35,10 @@ class DealLensAudioClient {
         // Audio buffering for turn-taking coordination
         this.audioBuffer = [];
 
+        // Streaming audio tracking
+        this.recentlyReceivedChunk = false;
+        this.chunkTimeout = null;
+
         // UI elements
         this.micButton = document.getElementById('micButton');
         this.statusDiv = document.getElementById('status');
@@ -69,6 +73,10 @@ class DealLensAudioClient {
                 break;
             case 'LISTENING':
                 await this.stopRecording();
+                break;
+            case 'AI_THINKING':
+                // Button should be disabled - no action
+                console.log('Button clicked while AI is thinking - ignoring');
                 break;
             case 'AI_SPEAKING':
                 await this.interruptAI();
@@ -191,13 +199,22 @@ class DealLensAudioClient {
                 this.updateStatus('🤔 Processing... please wait');
                 break;
 
+            case 'AI_THINKING':
+                // New state: AI is gathering audio chunks and preparing response
+                this.micButton.classList.add('thinking');
+                this.micButton.disabled = true;
+                this.micButton.style.cursor = 'not-allowed';
+                this.micButton.title = 'AI is thinking...';
+                this.updateStatus('🧠 AI is thinking... preparing response');
+                break;
+
             case 'AI_SPEAKING':
                 // Add interrupt-ready visual state - different color gradient
                 this.micButton.classList.add('ai-speaking');
                 this.micButton.disabled = false;
                 this.micButton.style.cursor = 'pointer';
                 this.micButton.title = 'Tap to interrupt';
-                this.updateStatus('🔊 AI speaking... (Tap microphone to interrupt)');
+                this.updateStatus('🔊 AI responding... (Tap to interrupt)');
                 break;
 
             default:
@@ -225,10 +242,26 @@ class DealLensAudioClient {
         console.log('🔇 Audio playback stopped');
     }
 
+    getBackendWebSocketURL() {
+        const hostname = window.location.hostname;
+        const isLocalDevelopment = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0';
+
+        if (isLocalDevelopment) {
+            console.log('🏠 Local development detected - using localhost backend');
+            return 'ws://localhost:8000/ws/audio';
+        } else {
+            console.log('☁️ Production environment detected - using cloud backend');
+            return '';
+        }
+    }
+
     connectWebSocket() {
         try {
-            // Connect to backend WebSocket
-            this.ws = new WebSocket('ws://localhost:8000/ws/audio');
+            // Dynamic backend URL detection
+            const backendUrl = this.getBackendWebSocketURL();
+            console.log(`Connecting to backend: ${backendUrl}`);
+
+            this.ws = new WebSocket(backendUrl);
 
             this.ws.onopen = () => {
                 console.log('Connected to DealLens AI backend');
@@ -516,6 +549,26 @@ class DealLensAudioClient {
         try {
             console.log(`Received audio chunk: ${base64Audio.length} chars, MIME: ${mimeType}`);
 
+            // If this is the first chunk and we're in IDLE, immediately show AI is thinking
+            if (this.conversationState === 'IDLE' && !this.isPlaying) {
+                console.log('🧠 First audio chunk received - AI is now thinking!');
+                this.setConversationState('AI_THINKING');
+            }
+
+            // Track that we recently received a chunk
+            this.recentlyReceivedChunk = true;
+
+            // Clear any existing timeout
+            if (this.chunkTimeout) {
+                clearTimeout(this.chunkTimeout);
+            }
+
+            // Set timeout to detect when chunks stop coming
+            this.chunkTimeout = setTimeout(() => {
+                console.log('⏰ Chunk timeout - backend stopped sending audio');
+                this.recentlyReceivedChunk = false;
+            }, 2000); // 2 second timeout
+
             // Convert base64 to array buffer
             const audioBuffer = this.base64ToArrayBuffer(base64Audio);
 
@@ -559,8 +612,8 @@ class DealLensAudioClient {
         try {
             this.isPlaying = true;
 
-            // Set conversation state to AI_SPEAKING
-            this.setConversationState('AI_SPEAKING');
+            // Set conversation state to AI_THINKING (gathering audio chunks)
+            this.setConversationState('AI_THINKING');
 
             // Create audio context for playback
             if (!this.playbackContext || this.playbackContext.state === 'closed') {
@@ -569,10 +622,10 @@ class DealLensAudioClient {
                 });
             }
 
-            console.log(`Starting AI audio playback with ${this.audioChunks.length} chunks`);
+            console.log(`🧠 AI is thinking... gathering ${this.audioChunks.length} audio chunks`);
 
-            // Schedule all chunks for seamless playback
-            await this.scheduleAudioChunks();
+            // Wait for backend to finish sending all chunks before playing
+            await this.waitForAllChunksToComplete();
 
         } catch (error) {
             console.error('Audio playback error:', error);
@@ -582,88 +635,162 @@ class DealLensAudioClient {
         }
     }
 
-    async scheduleAudioChunks() {
+    async waitForAllChunksToComplete() {
+        console.log('⏳ AI is thinking... waiting for all audio chunks to arrive');
+
+        let lastChunkCount = this.audioChunks.length;
+        let stableCount = 0;
+
+        // Wait until no new chunks arrive for 1.5 seconds (much faster!)
+        while (this.conversationState === 'AI_THINKING') {
+            await this.sleep(500); // Check every 500ms
+
+            if (this.audioChunks.length === lastChunkCount) {
+                stableCount++;
+
+                // Reduced wait time: 1.5 seconds (3 * 500ms) instead of 3 seconds
+                if (stableCount >= 3) {
+                    console.log(`🎯 AI finished thinking! Total chunks: ${this.audioChunks.length}`);
+                    await this.playAllChunks();
+                    break;
+                }
+            } else {
+                // New chunks arrived, reset the stability counter
+                lastChunkCount = this.audioChunks.length;
+                stableCount = 0;
+                console.log(`🧠 AI thinking... more chunks arrived, total now: ${this.audioChunks.length}`);
+            }
+        }
+    }
+
+    async playAllChunks() {
         if (this.audioChunks.length === 0) return;
 
-        // Start scheduling from current time
-        let scheduledTime = this.playbackContext.currentTime;
-        const chunksToSchedule = [...this.audioChunks]; // Copy the array
+        // Transition to AI_SPEAKING when we're ready to play audio
+        this.setConversationState('AI_SPEAKING');
+
+        console.log(`🎵 Playing ALL ${this.audioChunks.length} chunks now!`);
+        await this.playBufferedAudioChunks();
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async playBufferedAudioChunks() {
+        if (this.audioChunks.length === 0) return;
+
+        console.log(`🎵 Starting buffered playback of ${this.audioChunks.length} audio chunks`);
+
+        // Process chunks in batches to avoid browser limits and timing issues
+        const chunksToPlay = [...this.audioChunks]; // Copy the array
         this.audioChunks = []; // Clear original array
 
-        // Track scheduled sources for proper cleanup
-        const scheduledSources = [];
+        // Combine small chunks into larger buffers for more reliable playback
+        const combinedBuffers = this.combineSmallChunks(chunksToPlay);
+        console.log(`📦 Combined ${chunksToPlay.length} chunks into ${combinedBuffers.length} buffers`);
 
-        return new Promise((resolve) => {
-            let completedChunks = 0;
+        // Play combined buffers sequentially
+        for (let i = 0; i < combinedBuffers.length; i++) {
+            console.log(`🔊 Playing buffer ${i + 1}/${combinedBuffers.length}, state: ${this.conversationState}`);
 
-            chunksToSchedule.forEach((chunk, index) => {
-                try {
-                    // Create audio buffer for this chunk
-                    const buffer = this.playbackContext.createBuffer(1, chunk.length, this.audioSampleRate);
-                    buffer.copyToChannel(chunk, 0);
+            // Check if we've been interrupted
+            if (this.conversationState !== 'AI_SPEAKING') {
+                console.log(`🔴 Audio playback interrupted at buffer ${i + 1}, state changed to: ${this.conversationState}`);
+                break;
+            }
 
-                    // Create source and schedule it
-                    const source = this.playbackContext.createBufferSource();
-                    source.buffer = buffer;
-                    source.connect(this.playbackContext.destination);
+            const buffer = combinedBuffers[i];
 
-                    // Track this source
-                    scheduledSources.push(source);
-                    this.currentAudioSources.push(source);
+            try {
+                await this.playAudioBuffer(buffer);
+                console.log(`✅ Buffer ${i + 1} completed successfully`);
+            } catch (error) {
+                console.error(`❌ Buffer ${i + 1} failed:`, error);
+                break;
+            }
+        }
 
-                    // Schedule this chunk to start at the precise time
-                    source.start(scheduledTime);
+        // Playback complete
+        this.isPlaying = false;
+        this.isProcessing = false;
 
-                    // Calculate when this chunk will end
-                    const chunkDuration = chunk.length / this.audioSampleRate;
-                    scheduledTime += chunkDuration;
+        // Only return to idle if not interrupted
+        if (this.conversationState === 'AI_SPEAKING') {
+            console.log('🎯 Playback completed normally, transitioning to IDLE');
+            this.setConversationState('IDLE');
+        } else {
+            console.log(`🎯 Playback ended with state: ${this.conversationState}`);
+        }
 
-                    // Handle completion
-                    source.onended = () => {
-                        // Remove from tracking arrays
-                        const schedIndex = scheduledSources.indexOf(source);
-                        if (schedIndex > -1) scheduledSources.splice(schedIndex, 1);
+        console.log('✅ Buffered audio playback completed');
+    }
 
-                        const currentIndex = this.currentAudioSources.indexOf(source);
-                        if (currentIndex > -1) this.currentAudioSources.splice(currentIndex, 1);
+    combineSmallChunks(chunks) {
+        const combinedBuffers = [];
+        const CHUNKS_PER_BUFFER = 20; // Combine 20 small chunks into one buffer
 
-                        completedChunks++;
+        for (let i = 0; i < chunks.length; i += CHUNKS_PER_BUFFER) {
+            const chunkGroup = chunks.slice(i, i + CHUNKS_PER_BUFFER);
 
-                        // Check if this was the last chunk
-                        if (completedChunks === chunksToSchedule.length) {
-                            this.isPlaying = false;
-                            this.isProcessing = false;
+            // Calculate total length
+            let totalLength = 0;
+            chunkGroup.forEach(chunk => totalLength += chunk.length);
 
-                            // Only return to idle if not interrupted
-                            if (this.conversationState === 'AI_SPEAKING') {
-                                this.setConversationState('IDLE');
-                            }
+            // Create combined buffer
+            const combinedChunk = new Float32Array(totalLength);
+            let offset = 0;
 
-                            console.log('AI audio playback completed');
-                            resolve();
-                        }
-                    };
-
-                    source.onerror = (error) => {
-                        console.error('Audio chunk error:', error);
-                        completedChunks++;
-                        if (completedChunks === chunksToSchedule.length) {
-                            resolve();
-                        }
-                    };
-
-                    console.log(`Scheduled chunk ${index + 1}/${chunksToSchedule.length} at time ${scheduledTime - chunkDuration}, duration: ${chunkDuration}s`);
-
-                } catch (error) {
-                    console.error(`Error scheduling chunk ${index}:`, error);
-                    completedChunks++;
-                    if (completedChunks === chunksToSchedule.length) {
-                        resolve();
-                    }
-                }
+            chunkGroup.forEach(chunk => {
+                combinedChunk.set(chunk, offset);
+                offset += chunk.length;
             });
 
-            console.log(`Scheduled ${chunksToSchedule.length} audio chunks for seamless playback`);
+            combinedBuffers.push(combinedChunk);
+        }
+
+        return combinedBuffers;
+    }
+
+    async playAudioBuffer(floatArray) {
+        return new Promise((resolve, reject) => {
+            try {
+                // Create audio buffer
+                const buffer = this.playbackContext.createBuffer(1, floatArray.length, this.audioSampleRate);
+                buffer.copyToChannel(floatArray, 0);
+
+                // Create source
+                const source = this.playbackContext.createBufferSource();
+                source.buffer = buffer;
+                source.connect(this.playbackContext.destination);
+
+                // Track for interruption
+                this.currentAudioSources.push(source);
+
+                // Handle completion
+                source.onended = () => {
+                    const index = this.currentAudioSources.indexOf(source);
+                    if (index > -1) {
+                        this.currentAudioSources.splice(index, 1);
+                    }
+                    resolve();
+                };
+
+                source.onerror = (error) => {
+                    console.error('Audio buffer error:', error);
+                    const index = this.currentAudioSources.indexOf(source);
+                    if (index > -1) {
+                        this.currentAudioSources.splice(index, 1);
+                    }
+                    reject(error);
+                };
+
+                // Start playing immediately
+                source.start();
+
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 

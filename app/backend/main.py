@@ -18,12 +18,40 @@ from dotenv import load_dotenv
 from deal_tools import execute_function, FUNCTION_SCHEMAS
 import inspect
 
-# Load environment variables from .env file
-load_dotenv()
 
-# Configure logging
+# Cloud environment detection
+def is_cloud_environment():
+    return os.getenv("GOOGLE_CLOUD_PROJECT") is not None
+
+
+# Secret Manager integration for cloud deployment
+def get_secret_from_manager(secret_name):
+    """Get secret from Google Secret Manager"""
+    try:
+        from google.cloud import secretmanager
+
+        client = secretmanager.SecretManagerServiceClient()
+        project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
+        name = f"projects/{project_id}/secrets/{secret_name}/versions/latest"
+        response = client.access_secret_version(request={"name": name})
+        return response.payload.data.decode("UTF-8")
+    except Exception as e:
+        logger.error(f"Failed to get secret {secret_name} from Secret Manager: {e}")
+        return None
+
+
+# Configure logging first
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Load environment variables - cloud vs local
+if is_cloud_environment():
+    logger.info("Running in cloud environment - using Secret Manager")
+    # Running in cloud - don't load .env file
+else:
+    logger.info("Running in local environment - loading .env file")
+    # Load environment variables from .env file for local development
+    load_dotenv()
 
 # Create conversation logger
 conversation_logger = logging.getLogger("conversation")
@@ -137,13 +165,26 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve frontend files
-app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+# Serve frontend files only if directory exists (for local development)
+if os.path.exists("../frontend"):
+    app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+    logger.info("Static file serving enabled for local development")
+else:
+    logger.info(
+        "Static file serving disabled - frontend directory not found (cloud deployment)"
+    )
 
-# Gemini API key
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if not GEMINI_API_KEY:
-    logger.error("GEMINI_API_KEY environment variable not set")
+# Gemini API key - cloud vs local
+if is_cloud_environment():
+    logger.info("Loading Gemini API key from Secret Manager")
+    GEMINI_API_KEY = get_secret_from_manager("GEMINI_API_KEY")
+    if not GEMINI_API_KEY:
+        logger.error("Failed to load GEMINI_API_KEY from Secret Manager")
+else:
+    logger.info("Loading Gemini API key from environment variable")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    if not GEMINI_API_KEY:
+        logger.error("GEMINI_API_KEY environment variable not set")
 
 # Create Gemini client
 client = genai.Client(api_key=GEMINI_API_KEY)

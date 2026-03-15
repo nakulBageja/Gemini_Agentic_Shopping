@@ -58,38 +58,72 @@ User Voice → Frontend (JS) → WebSocket → Backend (Python) → Gemini Live 
 
 ---
 
-## 🚀 **5-Minute Setup**
+## 🚀 **Try DealLens AI Now**
 
-### **Step 1: Install Dependencies**
+### **🌐 Live Demo (Cloud Deployment)**
+**Production Backend**: `https://deallens-backend-553067044467.us-central1.run.app`
+
+**Quick Start**:
+1. Open the frontend locally: [Download & serve frontend files](app/frontend/)
+2. Frontend automatically connects to cloud backend
+3. Click microphone, grant permissions, and start talking!
+
+*The production backend runs on Google Cloud Run with enterprise-grade reliability.*
+
+### **💻 Local Development Setup**
+
+#### **Step 1: Install Dependencies**
 ```bash
 cd app/backend
 pip install -r requirements.txt
 ```
 
-### **Step 2: Get Gemini API Key**
+#### **Step 2: Get Gemini API Key**
 1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
 2. Create a free API key
-3. Update app/backend/.env file as below:
-```
-GEMINI_API_KEY='your_key_here'
+3. Create `app/backend/.env` file:
+```env
+GEMINI_API_KEY=your_key_here
 ```
 
-### **Step 3: Start Backend**
+#### **Step 3: Start Local Backend**
 ```bash
 cd app/backend
-
-# Start the server
 python main.py
 ```
 
-### **Step 4: Open Frontend**
+#### **Step 4: Open Frontend**
 Open: `http://localhost:8000/static/index.html`
 
-### **Step 5: Test Connection**
-1. Check that the frontend shows "Connected!" 
+*Frontend automatically detects local vs cloud backend*
+
+#### **Step 5: Test Connection**
+1. Check "Connected!" status appears
 2. Click the microphone button
 3. Grant microphone permissions when prompted
-4. The system is now ready for voice interaction
+4. Say: "I found AirPods for £249, can you find cheaper?"
+
+### **☁️ Cloud Deployment**
+
+The backend is deployed on **Google Cloud Run** for global accessibility:
+
+- **URL**: `<>`
+- **Region**: `us-central1` (Iowa, USA)
+- **Scaling**: Auto-scaling 0-100 instances
+- **Security**: API keys in Secret Manager
+- **Monitoring**: Cloud Run metrics and logging
+
+See [Server Documentation](documentation/server.md) for full deployment guide.
+
+---
+
+## 📖 Documentation
+
+### **Complete Technical Documentation**
+- **[Server Documentation](documentation/server.md)**: Backend architecture, Gemini Live API integration, local development, and Cloud Run deployment
+- **[Frontend Documentation](documentation/frontend.md)**: Web Audio API implementation, WebSocket communication, conversation flow, and browser compatibility
+- **[Product Architecture](documentation/product.md)**: Business overview and product requirements
+- **[System Architecture](documentation/architecture.md)**: High-level system design and technical decisions
 
 ---
 

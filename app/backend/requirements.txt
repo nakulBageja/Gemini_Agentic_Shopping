@@ -9,9 +9,13 @@ websockets>=11.0
 # Google Generative AI (Gemini) - New package
 google-genai>=0.1
 
+# Google Cloud Secret Manager for cloud deployment
+google-cloud-secret-manager>=2.16.0
+
 # Development utilities
 python-dotenv>=1.0
 
 # Note: Much simpler than before - no audio processing libraries,
 # no speech-to-text/text-to-speech, no complex agents
 # Everything is handled natively by Gemini Live API
+# Secret Manager added for secure API key storage in cloud
