@@ -1,0 +1,104 @@
+2026-03-15 03:03:38,723 - [CONVERSATION 1] USER INPUT START - 2026-03-15 03:03:38.723
+2026-03-15 03:03:46,405 - [CONVERSATION 1] FUNCTION CALL: search_deals({'product_name': 'iPhone 15'}) -> Error: websocket_endpoint.<locals>.<lambda>() missing 2 required positional arguments: 'current_price' and 'store_name'
+2026-03-15 03:03:47,287 - [CONVERSATION 1] MODEL RESPONSE START - 2026-03-15 03:03:47.287
+2026-03-15 03:03:56,100 - [CONVERSATION 1] MODEL RESPONSE END - 2026-03-15 03:03:56.100
+2026-03-15 03:03:56,101 - [CONVERSATION 1] RESPONSE DURATION: 8.81s
+2026-03-15 03:03:56,101 - [CONVERSATION 1] TOTAL CONVERSATION DURATION: 17.38s
+2026-03-15 03:03:56,101 - [CONVERSATION 1] USER: ""
+2026-03-15 03:03:56,101 - [CONVERSATION 1] MODEL: ""
+2026-03-15 03:03:56,101 - [CONVERSATION 1] ========================================
+2026-03-15 03:03:59,794 - [CONVERSATION 2] USER INPUT END - 2026-03-15 03:03:59.794 - Duration: 21.07s
+2026-03-15 03:05:23,762 - [CONVERSATION 1] USER INPUT START - 2026-03-15 03:05:23.762
+2026-03-15 03:05:30,142 - [CONVERSATION 1] FUNCTION CALL: search_deals({'product_name': 'iPhone 15 Pro'}) -> {'success': True, 'product_name': 'iPhone 15 Pro', 'current_price': None, 'deals': [{'store': 'EE', 'price': 979.99, 'url': 'https://ee.co.uk', 'savings': 0, 'savings_percentage': 0}, {'store': 'Carphone Warehouse', 'price': 989.99, 'url': 'https://carphonewarehouse.com', 'savings': 0, 'savings_percentage': 0}, {'store': 'Apple Store', 'price': 999.0, 'url': 'https://apple.com', 'savings': 0, 'savings_percentage': 0}], 'total_found': 3}
+2026-03-15 03:05:31,009 - [CONVERSATION 1] MODEL RESPONSE START - 2026-03-15 03:05:31.009
+2026-03-15 03:05:47,028 - [CONVERSATION 1] USER INPUT END - 2026-03-15 03:05:47.028 - Duration: 23.27s
+2026-03-15 03:05:47,660 - [CONVERSATION 1] MODEL RESPONSE END - 2026-03-15 03:05:47.660
+2026-03-15 03:05:47,660 - [CONVERSATION 1] RESPONSE DURATION: 16.65s
+2026-03-15 03:05:47,660 - [CONVERSATION 1] TOTAL CONVERSATION DURATION: 23.90s
+2026-03-15 03:05:47,661 - [CONVERSATION 1] USER: ""
+2026-03-15 03:05:47,661 - [CONVERSATION 1] MODEL: ""
+2026-03-15 03:05:47,661 - [CONVERSATION 1] ========================================
+2026-03-15 03:06:00,043 - [CONVERSATION 2] USER INPUT START - 2026-03-15 03:06:00.043
+2026-03-15 03:06:04,007 - [CONVERSATION 2] FUNCTION CALL: search_deals({'product_name': 'MacBook Air M2'}) -> {'success': True, 'product_name': 'MacBook Air M2', 'current_price': None, 'deals': [{'store': 'Amazon UK', 'price': 1099.99, 'url': 'https://amazon.co.uk', 'savings': 0, 'savings_percentage': 0}, {'store': 'Currys', 'price': 1129.99, 'url': 'https://currys.co.uk', 'savings': 0, 'savings_percentage': 0}, {'store': 'Apple Store', 'price': 1149.0, 'url': 'https://apple.com', 'savings': 0, 'savings_percentage': 0}], 'total_found': 3}
+2026-03-15 03:06:04,908 - [CONVERSATION 2] MODEL RESPONSE START - 2026-03-15 03:06:04.908
+2026-03-15 03:06:20,294 - [CONVERSATION 2] MODEL RESPONSE END - 2026-03-15 03:06:20.294
+2026-03-15 03:06:20,294 - [CONVERSATION 2] RESPONSE DURATION: 15.39s
+2026-03-15 03:06:20,294 - [CONVERSATION 2] TOTAL CONVERSATION DURATION: 20.25s
+2026-03-15 03:06:20,294 - [CONVERSATION 2] USER: ""
+2026-03-15 03:06:20,294 - [CONVERSATION 2] MODEL: ""
+2026-03-15 03:06:20,294 - [CONVERSATION 2] ========================================
+2026-03-15 03:06:28,033 - [CONVERSATION 3] USER INPUT END - 2026-03-15 03:06:28.033 - Duration: 27.99s
+2026-03-15 03:07:53,036 - [CONVERSATION 1] USER INPUT START - 2026-03-15 03:07:53.036
+2026-03-15 03:07:58,153 - [CONVERSATION 1] FUNCTION CALL: search_deals({'product_name': 'AirPods Pro'}) -> {'success': True, 'product_name': 'AirPods Pro', 'current_price': None, 'deals': [{'store': 'Amazon UK', 'price': 229.99, 'url': 'https://amazon.co.uk', 'savings': 0, 'savings_percentage': 0}, {'store': 'John Lewis', 'price': 239.99, 'url': 'https://johnlewis.com', 'savings': 0, 'savings_percentage': 0}, {'store': 'Apple Store', 'price': 249.99, 'url': 'https://apple.com', 'savings': 0, 'savings_percentage': 0}], 'total_found': 3}
+2026-03-15 03:07:58,991 - [CONVERSATION 1] MODEL RESPONSE START - 2026-03-15 03:07:58.991
+2026-03-15 03:08:13,073 - [CONVERSATION 1] USER INPUT END - 2026-03-15 03:08:13.073 - Duration: 20.04s
+2026-03-15 03:08:14,041 - [CONVERSATION 1] MODEL RESPONSE END - 2026-03-15 03:08:14.041
+2026-03-15 03:08:14,042 - [CONVERSATION 1] RESPONSE DURATION: 15.05s
+2026-03-15 03:08:14,042 - [CONVERSATION 1] TOTAL CONVERSATION DURATION: 21.01s
+2026-03-15 03:08:14,042 - [CONVERSATION 1] USER: ""
+2026-03-15 03:08:14,042 - [CONVERSATION 1] MODEL: ""
+2026-03-15 03:08:14,042 - [CONVERSATION 1] ========================================
+2026-03-15 03:08:16,188 - [CONVERSATION 2] USER INPUT START - 2026-03-15 03:08:16.188
+2026-03-15 03:08:20,648 - [CONVERSATION 2] FUNCTION CALL: search_deals({'product_name': 'AirPods Pro'}) -> {'success': True, 'product_name': 'AirPods Pro', 'current_price': None, 'deals': [{'store': 'Amazon UK', 'price': 229.99, 'url': 'https://amazon.co.uk', 'savings': 0, 'savings_percentage': 0}, {'store': 'John Lewis', 'price': 239.99, 'url': 'https://johnlewis.com', 'savings': 0, 'savings_percentage': 0}, {'store': 'Apple Store', 'price': 249.99, 'url': 'https://apple.com', 'savings': 0, 'savings_percentage': 0}], 'total_found': 3}
+2026-03-15 03:08:21,513 - [CONVERSATION 2] MODEL RESPONSE START - 2026-03-15 03:08:21.513
+2026-03-15 03:08:26,136 - [CONVERSATION 2] USER INPUT END - 2026-03-15 03:08:26.136 - Duration: 9.95s
+2026-03-15 03:08:39,864 - [CONVERSATION 2] MODEL RESPONSE END - 2026-03-15 03:08:39.864
+2026-03-15 03:08:39,864 - [CONVERSATION 2] RESPONSE DURATION: 18.35s
+2026-03-15 03:08:39,864 - [CONVERSATION 2] TOTAL CONVERSATION DURATION: 23.68s
+2026-03-15 03:08:39,864 - [CONVERSATION 2] USER: ""
+2026-03-15 03:08:39,864 - [CONVERSATION 2] MODEL: ""
+2026-03-15 03:08:39,864 - [CONVERSATION 2] ========================================
+2026-03-15 11:44:30,906 - [CONVERSATION 1] USER INPUT START - 2026-03-15 11:44:30.906
+2026-03-15 11:44:37,635 - [CONVERSATION 1] FUNCTION CALL: search_deals({'product_name': 'AirPods Pro', 'current_price': 249}) -> {'success': True, 'product_name': 'AirPods Pro', 'current_price': 249, 'deals': [{'store': 'Amazon UK', 'price': 229.99, 'url': 'https://amazon.co.uk', 'savings': 19.01, 'savings_percentage': 7.6}, {'store': 'John Lewis', 'price': 239.99, 'url': 'https://johnlewis.com', 'savings': 9.01, 'savings_percentage': 3.6}, {'store': 'Apple Store', 'price': 249.99, 'url': 'https://apple.com', 'savings': 0, 'savings_percentage': 0}], 'total_found': 3}
+2026-03-15 11:44:38,515 - [CONVERSATION 1] MODEL RESPONSE START - 2026-03-15 11:44:38.514
+2026-03-15 11:44:48,400 - [CONVERSATION 1] MODEL RESPONSE END - 2026-03-15 11:44:48.400
+2026-03-15 11:44:48,401 - [CONVERSATION 1] RESPONSE DURATION: 9.89s
+2026-03-15 11:44:48,401 - [CONVERSATION 1] TOTAL CONVERSATION DURATION: 17.49s
+2026-03-15 11:44:48,401 - [CONVERSATION 1] USER: ""
+2026-03-15 11:44:48,401 - [CONVERSATION 1] MODEL: ""
+2026-03-15 11:44:48,401 - [CONVERSATION 1] ========================================
+2026-03-15 11:44:55,422 - [CONVERSATION 2] USER INPUT END - 2026-03-15 11:44:55.421 - Duration: 24.52s
+2026-03-15 11:44:56,843 - [CONVERSATION 2] USER INPUT START - 2026-03-15 11:44:56.843
+2026-03-15 11:44:58,497 - [CONVERSATION 2] USER INPUT END - 2026-03-15 11:44:58.497 - Duration: 1.65s
+2026-03-15 14:24:41,197 - [CONVERSATION 2] USER INPUT START - 2026-03-15 14:24:41.197
+2026-03-15 14:24:51,803 - [CONVERSATION 2] FUNCTION CALL: search_deals({'store_name': 'Apple Store', 'current_price': 249, 'product_name': 'AirPods Pro'}) -> {'success': True, 'product_name': 'AirPods Pro', 'current_price': 249, 'deals': [{'store': 'Amazon UK', 'price': 229.99, 'url': 'https://amazon.co.uk', 'savings': 19.01, 'savings_percentage': 7.6}, {'store': 'John Lewis', 'price': 239.99, 'url': 'https://johnlewis.com', 'savings': 9.01, 'savings_percentage': 3.6}], 'total_found': 2}
+2026-03-15 14:24:52,682 - [CONVERSATION 2] MODEL RESPONSE START - 2026-03-15 14:24:52.682
+2026-03-15 14:24:59,067 - [CONVERSATION 2] MODEL RESPONSE END - 2026-03-15 14:24:59.067
+2026-03-15 14:24:59,068 - [CONVERSATION 2] RESPONSE DURATION: 6.39s
+2026-03-15 14:24:59,068 - [CONVERSATION 2] TOTAL CONVERSATION DURATION: 17.87s
+2026-03-15 14:24:59,068 - [CONVERSATION 2] USER: ""
+2026-03-15 14:24:59,068 - [CONVERSATION 2] MODEL: ""
+2026-03-15 14:24:59,068 - [CONVERSATION 2] ========================================
+2026-03-15 14:25:00,721 - [CONVERSATION 3] FUNCTION CALL: get_best_deals({}) -> {'success': True, 'message': 'Found 12 deals across all products', 'deals': [{'product_name': 'AirPods Pro', 'store': 'Amazon UK', 'price': 229.99, 'url': 'https://amazon.co.uk'}, {'product_name': 'AirPods Pro', 'store': 'John Lewis', 'price': 239.99, 'url': 'https://johnlewis.com'}, {'product_name': 'AirPods Pro', 'store': 'Apple Store', 'price': 249.99, 'url': 'https://apple.com'}, {'product_name': 'PlayStation 5', 'store': 'Amazon UK', 'price': 449.99, 'url': 'https://amazon.co.uk'}, {'product_name': 'PlayStation 5', 'store': 'Argos', 'price': 479.99, 'url': 'https://argos.co.uk'}]}
+2026-03-15 14:25:01,601 - [CONVERSATION 3] MODEL RESPONSE START - 2026-03-15 14:25:01.601
+2026-03-15 14:25:09,831 - [CONVERSATION 3] MODEL RESPONSE END - 2026-03-15 14:25:09.830
+2026-03-15 14:25:09,831 - [CONVERSATION 3] RESPONSE DURATION: 8.23s
+2026-03-15 14:25:09,831 - [CONVERSATION 3] TOTAL CONVERSATION DURATION: 28.63s
+2026-03-15 14:25:09,831 - [CONVERSATION 3] USER: ""
+2026-03-15 14:25:09,831 - [CONVERSATION 3] MODEL: ""
+2026-03-15 14:25:09,831 - [CONVERSATION 3] ========================================
+2026-03-15 14:25:31,700 - [CONVERSATION 4] MODEL RESPONSE END - 2026-03-15 14:25:31.700
+2026-03-15 14:25:31,701 - [CONVERSATION 4] RESPONSE DURATION: 30.10s
+2026-03-15 14:25:31,701 - [CONVERSATION 4] TOTAL CONVERSATION DURATION: 50.50s
+2026-03-15 14:25:31,701 - [CONVERSATION 4] USER: ""
+2026-03-15 14:25:31,701 - [CONVERSATION 4] MODEL: ""
+2026-03-15 14:25:31,701 - [CONVERSATION 4] ========================================
+2026-03-15 14:25:33,791 - [CONVERSATION 5] MODEL RESPONSE END - 2026-03-15 14:25:33.790
+2026-03-15 14:25:33,791 - [CONVERSATION 5] RESPONSE DURATION: 32.19s
+2026-03-15 14:25:33,791 - [CONVERSATION 5] TOTAL CONVERSATION DURATION: 52.59s
+2026-03-15 14:25:33,791 - [CONVERSATION 5] USER: ""
+2026-03-15 14:25:33,791 - [CONVERSATION 5] MODEL: ""
+2026-03-15 14:25:33,791 - [CONVERSATION 5] ========================================
+2026-03-15 14:25:37,394 - [CONVERSATION 6] MODEL RESPONSE END - 2026-03-15 14:25:37.394
+2026-03-15 14:25:37,394 - [CONVERSATION 6] RESPONSE DURATION: 35.79s
+2026-03-15 14:25:37,394 - [CONVERSATION 6] TOTAL CONVERSATION DURATION: 56.20s
+2026-03-15 14:25:37,394 - [CONVERSATION 6] USER: ""
+2026-03-15 14:25:37,394 - [CONVERSATION 6] MODEL: ""
+2026-03-15 14:25:37,394 - [CONVERSATION 6] ========================================
+2026-03-15 14:25:40,200 - [CONVERSATION 7] MODEL RESPONSE END - 2026-03-15 14:25:40.200
+2026-03-15 14:25:40,200 - [CONVERSATION 7] RESPONSE DURATION: 38.60s
+2026-03-15 14:25:40,201 - [CONVERSATION 7] TOTAL CONVERSATION DURATION: 59.00s
+2026-03-15 14:25:40,201 - [CONVERSATION 7] USER: ""
+2026-03-15 14:25:40,201 - [CONVERSATION 7] MODEL: ""
+2026-03-15 14:25:40,201 - [CONVERSATION 7] ========================================
+2026-03-15 14:25:41,018 - [CONVERSATION 8] USER INPUT END - 2026-03-15 14:25:41.017 - Duration: 59.82s

@@ -1,0 +1,17 @@
+# DealLens AI - Native Audio Backend Dependencies
+# Minimal dependencies for native audio processing with Gemini Live
+
+# FastAPI and WebSocket support
+fastapi>=0.100
+uvicorn[standard]>=0.20
+websockets>=11.0
+
+# Google Generative AI (Gemini) - New package
+google-genai>=0.1
+
+# Development utilities
+python-dotenv>=1.0
+
+# Note: Much simpler than before - no audio processing libraries,
+# no speech-to-text/text-to-speech, no complex agents
+# Everything is handled natively by Gemini Live API

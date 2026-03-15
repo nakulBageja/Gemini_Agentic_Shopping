@@ -1,0 +1,113 @@
+{
+    "products": [
+        {
+            "id": "ps5",
+            "name": "PlayStation 5",
+            "keywords": [
+                "playstation",
+                "ps5",
+                "gaming",
+                "console",
+                "sony"
+            ],
+            "deals": [
+                {
+                    "store": "Amazon UK",
+                    "price": 449.99,
+                    "url": "https://amazon.co.uk"
+                },
+                {
+                    "store": "Argos",
+                    "price": 479.99,
+                    "url": "https://argos.co.uk"
+                },
+                {
+                    "store": "Currys",
+                    "price": 499.99,
+                    "url": "https://currys.co.uk"
+                }
+            ]
+        },
+        {
+            "id": "airpods-pro",
+            "name": "AirPods Pro",
+            "keywords": [
+                "airpods",
+                "apple",
+                "earbuds",
+                "wireless"
+            ],
+            "deals": [
+                {
+                    "store": "Amazon UK",
+                    "price": 229.99,
+                    "url": "https://amazon.co.uk"
+                },
+                {
+                    "store": "Apple Store",
+                    "price": 249.99,
+                    "url": "https://apple.com"
+                },
+                {
+                    "store": "John Lewis",
+                    "price": 239.99,
+                    "url": "https://johnlewis.com"
+                }
+            ]
+        },
+        {
+            "id": "macbook-air",
+            "name": "MacBook Air M2",
+            "keywords": [
+                "macbook",
+                "apple",
+                "laptop",
+                "m2"
+            ],
+            "deals": [
+                {
+                    "store": "Apple Store",
+                    "price": 1149.00,
+                    "url": "https://apple.com"
+                },
+                {
+                    "store": "Amazon UK",
+                    "price": 1099.99,
+                    "url": "https://amazon.co.uk"
+                },
+                {
+                    "store": "Currys",
+                    "price": 1129.99,
+                    "url": "https://currys.co.uk"
+                }
+            ]
+        },
+        {
+            "id": "iphone-15-pro",
+            "name": "iPhone 15 Pro",
+            "keywords": [
+                "iphone",
+                "apple",
+                "smartphone",
+                "mobile"
+            ],
+            "deals": [
+                {
+                    "store": "Apple Store",
+                    "price": 999.00,
+                    "url": "https://apple.com"
+                },
+                {
+                    "store": "EE",
+                    "price": 979.99,
+                    "url": "https://ee.co.uk"
+                },
+                {
+                    "store": "Carphone Warehouse",
+                    "price": 989.99,
+                    "url": "https://carphonewarehouse.com"
+                }
+            ]
+        }
+    ]
+}
