@@ -1,12 +1,18 @@
-# DealLens AI – Real-Time Shopping Assistant
+# DealLens AI 🛍️
+**Talk to your shopping assistant like never before!** DealLens AI is a real-time conversational shopping companion powered by Gemini 2.0 Flash Live API.
 
-## Overview
+Think "Alexa for shopping" but smarter – speak naturally about products you're considering, and get instant voice responses with visual deal comparisons. DealLens transforms how you discover better prices and make purchasing decisions.
 
-DealLens AI is a real-time conversational shopping agent that helps users find better deals instantly. By simply describing a product via voice, users can get spoken answers and visual results showing cheaper prices across multiple marketplaces. The system is designed to handle interruptions and respond naturally.
+---
 
-**Category:** Live Agents  
-**Technologies:** Google Gemini, Gemini Live API, Google Cloud Run, Firestore, GenAI SDK / ADK  
-**Multimodal:** Voice input, Voice + Visual output
+## ✨ Key Features
+
+🎤 **Natural Voice Conversations**: Low-latency, interruptible shopping discussions  
+🛒 **Real-time Price Discovery**: "I see AirPods for £249 at Apple Store" → Get instant alternatives  
+👁️ **Visual Deal Cards**: See price comparisons and savings at a glance  
+🔊 **Seamless Audio**: Crystal clear responses with no breaking or distortion  
+↩️ **Smart Interruptions**: Change your mind mid-conversation, just like talking to a human  
+📱 **Clean UI**: Icon-only interface with visual state indicators  
 
 ---
 
@@ -28,89 +34,139 @@ Planned enhancements include **camera-based product recognition**.
 
 ---
 
-## Features
+## 🔧 Technical Architecture
 
-- Real-time voice interaction  
-- Interruptible conversation (barge-in)  
-- Visual deal cards  
-- Multi-agent architecture: Manager Agent + Deal Search Agent  
-- Google Cloud hosted backend
+**Technologies:** Python FastAPI, WebSocket, Gemini Live API, Web Audio API, Vanilla JS  
+**Audio Processing:** Unified 24kHz sample rate, seamless chunk scheduling, persistent microphone streams  
+**Data Storage:** JSON-based deal database for rapid prototyping  
+**Category:** Live Agents with multimodal Voice + Visual output
+
+### Architecture Overview
+```
+User Voice → Frontend (JS) → WebSocket → Backend (Python) → Gemini Live API
+                ↓                           ↓
+           Audio Processing            Deal Search Tools
+                ↓                           ↓
+        Visual Deal Cards  ←  Voice Response + Deal Data
+```
+
+**Recent Technical Achievements:**
+- 🎵 **Voice Breaking Eliminated**: Seamless audio scheduling prevents gaps between response chunks
+- ⚡ **50% Faster Response**: 3-second silence detection (down from 10s)  
+- 🎤 **No Permission Re-requests**: Persistent microphone streams improve UX
+- 📊 **Web Audio API Compliant**: Power-of-2 buffer sizes (8192) for optimal performance
 
 ---
 
-## Architecture
+## 🚀 **5-Minute Setup**
 
-See [Architecture Diagram](documentation/architecture.md)
-
-**Phase 1:** Voice-first shopping assistant  
-**Phase 2:** Vision-enabled product recognition  
-**Phase 3:** Autonomous purchase agent
-
----
-
-## Setup & Deployment
-
-### Prerequisites
-
-- Node.js (frontend)
-- Python 3.10+ (backend)
-- Google Cloud Project
-- Firestore DB with product deals
-- Gemini Live API access
-
-### Local Setup
-
-1. Clone the repository  
+### **Step 1: Install Dependencies**
 ```bash
-git clone https://github.com/<username>/deallens-ai.git
-cd deallens-ai
-```
-
-2. Install backend dependencies
-```
+cd app/backend
 pip install -r requirements.txt
 ```
-3. Install frontend dependencies
+
+### **Step 2: Get Gemini API Key**
+1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Create a free API key
+3. Update app/backend/.env file as below:
 ```
-cd frontend
-npm install
-```
-4. Set environment variables:
-```
-GEMINI_API_KEY=<your_key>
-FIRESTORE_CREDENTIALS=<path_to_json>
-```
-5. Run backend
-```
-python app.py
-```
-6. Run frontend
-```
-npm start
+GEMINI_API_KEY='your_key_here'
 ```
 
-### Deployment
+### **Step 3: Start Backend**
+```bash
+cd app/backend
 
-Backend: Deploy to Google Cloud Run
+# Start the server
+python main.py
+```
 
-Database: Firestore
+### **Step 4: Open Frontend**
+Open: `http://localhost:8000/static/index.html`
 
-Gemini API calls handled via Cloud Run backend
+### **Step 5: Test Connection**
+1. Check that the frontend shows "Connected!" 
+2. Click the microphone button
+3. Grant microphone permissions when prompted
+4. The system is now ready for voice interaction
 
-### How It Works
+---
 
-1. User speaks into the microphone on the web page
+## 💬 Example Conversations
 
-2. Audio is sent to Gemini Live API for transcription & intent parsing
+**Price Comparison:**
+> 🗣️ "I found iPhone 15 Pro for £999 at Currys, can you find it cheaper?"  
+> 🤖 "Amazon has it for £949 and Very for £969. You could save £50 with Amazon!"
 
-3. Manager Agent coordinates the workflow
+**Product Discovery:**
+> 🗣️ "What's the best deal on gaming headsets under £100?"  
+> 🤖 "Great question! I found the SteelSeries Arctis 7 for £89 at Game, down from £159!"
 
-4. Deal Search Agent queries Firestore / Marketplace APIs
+**Smart Interruptions:**
+> 🗣️ "Actually, I meant wireless headsets instead"  
+> 🤖 "Got it! For wireless, the Sony WH-1000XM4 is £279 at John Lewis..."
 
-5. Results are returned to the Manager Agent
+---
 
-6. User receives voice reply + visual cards
+## How It Works
 
-### Demo Video
+1. **User speaks** into the microphone on the web page
+3. **Gemini Live API** handles transcription & intent parsing in real-time
+4. **Deal Search Tools** query the product database for price comparisons
+5. **User receives** synchronized voice response + visual deal cards
 
-Watch Demo video here
+---
+
+## ❓ Troubleshooting
+
+### **Audio Issues**
+- **No microphone access**: Ensure HTTPS is used (or localhost). Check browser permissions in Settings.
+- **Voice breaking/distortion**: Clear browser cache and reload. Try Chrome/Edge for best compatibility.
+- **Microphone not working**: Test microphone with other apps. Check device isn't muted.
+
+### **Connection Issues**
+- **"Disconnected" status**: Ensure backend is running on `localhost:8000`. Check terminal for errors.
+- **WebSocket errors**: Try refreshing the page. Check firewall isn't blocking port 8000.
+- **API errors**: Verify Gemini API key is valid and has Live API access enabled.
+
+### **Browser Compatibility**
+- **Recommended**: Chrome, Edge (full Web Audio API support)
+- **Limitations**: Safari may have microphone permission issues
+- **Mobile**: Works best on mobile Chrome/Safari with HTTPS
+
+### **Common Error Messages**
+- `"Microphone permission denied"`: Grant permissions in browser settings
+- `"Not connected to backend"`: Start the Python backend server
+- `"Audio processing failed"`: Check Web Audio API support in browser console
+
+---
+
+## 🛣️ Roadmap
+
+**Phase 1** ✅ Voice-first shopping assistant with seamless audio  
+**Phase 2** 🔄 Vision-enabled product recognition via camera  
+**Phase 3** 📋 Enhanced deal database with real-time pricing APIs  
+**Phase 4** 🤝 Multi-retailer integrations and purchase capabilities
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## 🤝 Contributing
+
+DealLens AI is developed by Nakul Bageja to explore practical applications of conversational AI in shopping. Contributions, suggestions, and feedback are welcome via Issues or Pull Requests.
+
+**Disclaimer:** Product prices and availability are for demonstration purposes using sample data. This is a proof-of-concept showcasing Gemini Live API capabilities, created during [Gemini Live Agent hackathon ](https://geminiliveagentchallenge.devpost.com/)
+
+---
+
+**Ready to revolutionize your shopping experience?** 🛍️ Start talking to DealLens AI today!
+
+# LEFT TO DO
+
+- [ ] Architecture.md
+- [ ] Improved Examples in deals.json
+- [ ] Demo Video
